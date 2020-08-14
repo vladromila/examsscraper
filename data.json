@@ -1,0 +1,11 @@
+{
+    "nume": "Romila",
+    "prenume": "Iulian",
+    "nrf": "12345",
+    "email": "iulianromila@gmail.com",
+    "maxDate": {
+        "day": 8,
+        "month": 11,
+        "year": 2020
+    }
+}
