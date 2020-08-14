@@ -38,7 +38,7 @@ scraper.launch({
                             })
                             if (toSendDates.length)
                                 await request({
-                                    url: 'http://localhost:3000/send',
+                                    url: 'http://examsscraper.herokuapp.com/send',
                                     method: "POST",
                                     headers: {
                                         "content-type": "application/json",
