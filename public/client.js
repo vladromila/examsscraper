@@ -5,6 +5,8 @@ if ('serviceWorker' in navigator) {
 
   run().catch(error => console.error(error));
 }
+else
+  console.log("No service worker")
 
 async function run() {
   console.log('Registering service worker');
