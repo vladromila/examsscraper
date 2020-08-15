@@ -6,14 +6,28 @@ var admin = require("firebase-admin");
 let settings = require("./data.json");
 let request = require("request");
 
+let sendData = async (toSendDates) => {
+    await request({
+        url: 'http://examsscraper.herokuapp.com/send',
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: {
+            dates: toSendDates
+        },
+        json: true
+    }
+    )
+}
 scraper.launch({
     headless: false,
-    userDataDir: "~/Library/Application Support/Google/Chrome",
+    userDataDir: "C:/Users/romil/AppData/Local/Google/Chrome",
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     ignoreDefaultArgs: ['--disable-extensions'],
 }).then(async (browser) => {
     let page = await browser.newPage();
-    await page.goto("https://www.drpciv.ro/drpciv-booking/formular/22/theoryExamination")
+    await page.goto("https://drpciv.ro/drpciv-booking/formular/27/theoryExamination")
     let func = async () => {
         await page.reload();
         setTimeout(async () => {
@@ -25,40 +39,67 @@ scraper.launch({
                 document.querySelector("#file-number").value = settings.nrf;
             }, settings)
             let dates = await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: new Date().getMonth(), year: new Date().getFullYear() } }));
-            button.click();
-            setTimeout(async () => {
-                dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 1) % 12, year: new Date().getMonth() + 1 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
-                await button.click();
+            let toSendDates = []
+            dates.forEach(date => {
+                if (new Date(date.year, date.month, date.day, 0, 0, 0, 0) < new Date(settings.maxDate.year, settings.maxDate.month, settings.maxDate.day, 0, 0, 0, 0))
+                    toSendDates.push(date);
+            })
+            if (toSendDates.length)
+                await sendData(toSendDates)
+            else {
+                button.click();
                 setTimeout(async () => {
-                    dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 2) % 12, year: new Date().getMonth() + 2 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
-                    await button.click();
-                    setTimeout(async () => {
-                        dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 3) % 12, year: new Date().getMonth() + 3 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
+                    dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 1) % 12, year: new Date().getMonth() + 1 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
+                    let toSendDates = []
+                    dates.forEach(date => {
+                        if (new Date(date.year, date.month, date.day, 0, 0, 0, 0) < new Date(settings.maxDate.year, settings.maxDate.month, settings.maxDate.day, 0, 0, 0, 0))
+                            toSendDates.push(date);
+                    })
+                    if (toSendDates.length)
+                        await sendData(toSendDates)
+                    else {
                         await button.click();
                         setTimeout(async () => {
-                            dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 4) % 12, year: new Date().getMonth() + 4 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
+                            dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 2) % 12, year: new Date().getMonth() + 2 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
                             let toSendDates = []
                             dates.forEach(date => {
-                                if (new Date(date.day, date.month, date.year) < new Date(settings.maxDate.day, settings.maxDate.month, settings.maxDate.year))
+                                if (new Date(date.year, date.month, date.day, 0, 0, 0, 0) < new Date(settings.maxDate.year, settings.maxDate.month, settings.maxDate.day, 0, 0, 0, 0))
                                     toSendDates.push(date);
                             })
                             if (toSendDates.length)
-                                await request({
-                                    url: 'http://examsscraper.herokuapp.com/send',
-                                    method: "POST",
-                                    headers: {
-                                        "content-type": "application/json",
-                                    },
-                                    body: {
-                                        dates: toSendDates
-                                    },
-                                    json: true
-                                }
-                                )
-                        }, 1000)
-                    }, 1000)
-                })
-            }, 1000)
+                                await sendData(toSendDates)
+                            else {
+                                await button.click();
+                                setTimeout(async () => {
+                                    dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 3) % 12, year: new Date().getMonth() + 3 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
+                                    let toSendDates = []
+                                    dates.forEach(date => {
+                                        if (new Date(date.year, date.month, date.day, 0, 0, 0, 0) < new Date(settings.maxDate.year, settings.maxDate.month, settings.maxDate.day, 0, 0, 0, 0))
+                                            toSendDates.push(date);
+                                    })
+                                    if (toSendDates.length)
+                                        await sendData(toSendDates)
+                                    else {
+                                        await button.click();
+                                        setTimeout(async () => {
+                                            dates.push(...await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: (new Date().getMonth() + 4) % 12, year: new Date().getMonth() + 4 >= 12 ? new Date().getFullYear() + 1 : new Date().getFullYear() } })));
+                                            let toSendDates = []
+                                            dates.forEach(date => {
+                                                if (new Date(date.year, date.month, date.day, 0, 0, 0, 0) < new Date(settings.maxDate.year, settings.maxDate.month, settings.maxDate.day, 0, 0, 0, 0))
+                                                    toSendDates.push(date);
+                                            })
+                                            if (toSendDates.length)
+                                                await sendData(toSendDates)
+                                            else
+                                                func();
+                                        }, 1000)
+                                    }
+                                }, 1000)
+                            }
+                        })
+                    }
+                }, 1000)
+            }
         }, 2500)
     }
     func();
