@@ -23,7 +23,7 @@ async function run() {
   console.log('Registered push');
 
   console.log('Sending push');
-  await fetch('http://localhost:3000/subscribe', {
+  await fetch('https://examsscraper.herokuapp.com/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscription),
     headers: {
