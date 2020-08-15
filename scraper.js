@@ -14,7 +14,7 @@ let sendData = async (toSendDates) => {
             "content-type": "application/json",
         },
         body: {
-            dates: toSendDates
+            dates: [toSendDates[0]]
         },
         json: true
     }
@@ -22,12 +22,12 @@ let sendData = async (toSendDates) => {
 }
 scraper.launch({
     headless: false,
-    userDataDir: "C:/Users/romil/AppData/Local/Google/Chrome",
+    userDataDir: "~/Library/Application Support/Google/Chrome",
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     ignoreDefaultArgs: ['--disable-extensions'],
 }).then(async (browser) => {
     let page = await browser.newPage();
-    await page.goto("https://drpciv.ro/drpciv-booking/formular/27/theoryExamination")
+    await page.goto("https://drpciv.ro/drpciv-booking/formular/22/theoryExamination")
     let func = async () => {
         await page.reload();
         setTimeout(async () => {
@@ -105,5 +105,15 @@ scraper.launch({
     func();
 })
     .catch((e) => {
-        console.log(e);
+        request({
+            url: 'http://examsscraper.herokuapp.com/error',
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: {
+            },
+            json: true
+        }
+        )
     })

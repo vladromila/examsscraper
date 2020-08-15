@@ -5,7 +5,7 @@ var admin = require("firebase-admin");
 var serviceAccount = require("./akeys.json");
 const publicVapidKey = 'BP_V0TZXgtx__iFNal1fR5QIYwRLwPdhmhVM6X82P88DsT9zjJeDocvpX3vH_4cEhAMsQIdkXHuSOI1i1qj9Ogs';
 const privateVapidKey = "PQAU7Lqki91x70jKzWBv67Tmz3e6FI2olUX8WZHcDPA";
-let months = ["Februarie", "Ianuarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"]
+let months = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"]
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://examsscraper.firebaseio.com"
@@ -54,7 +54,24 @@ app.post('/send', async (req, res) => {
         }
     })
 })
+app.post('/error', async (req, res) => {
+    admin.database().ref("/subscriptions/").once("value", async snapshot => {
+        let data = snapshot.val();
+        if (data) {
+            let subscriptions = [];
+            Object.keys(data).forEach(key => {
+                subscriptions.push(JSON.parse(data[key]))
+            })
+            await Promise.all(subscriptions.map(async subscription => {
+                await webpush.sendNotification(subscription, JSON.stringify({ title: "Eroare", body: "Unul din device uri are o eraore" })).catch(error => {
+                    console.error(error.stack);
+                })
+            })
+            )
+            res.status(201).json({ status: "Success" });
+        }
+    })
+})
 
 
-
-app.listen(process.env.PORT||3000);
+app.listen(process.env.PORT || 3000);
