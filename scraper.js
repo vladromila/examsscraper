@@ -18,6 +18,12 @@ scraper.launch({
         await page.reload();
         setTimeout(async () => {
             let button = await page.$("a.next");
+            await page.evaluate((settings) => {
+                document.querySelector("#last-name").value = settings.nume
+                document.querySelector("#first-name").value = settings.prenume
+                document.querySelector("#email").value = settings.email
+                document.querySelector("#file-number").value = settings.nrf;
+            }, settings)
             let dates = await page.$$eval("td.available-day", data => data.map(date => { return { day: JSON.parse(date.children[0].innerHTML), month: new Date().getMonth(), year: new Date().getFullYear() } }));
             button.click();
             setTimeout(async () => {
