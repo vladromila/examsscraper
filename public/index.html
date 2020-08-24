@@ -3,10 +3,154 @@
 <head>
   <title>Push Demo</title>
   <script type="application/javascript" src="/client.js"></script>
+  <style>
+    h1 {
+      color: red;
+      text-align: center;
+    }
+
+    input {
+      align-self: center;
+      text-align: center;
+      font-size: large;
+    }
+
+    .date-container {
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    h4 {
+      text-align: center;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      border-radius: 5px;
+      align-self: center;
+      margin: 10;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      padding: 2px 16px;
+    }
+
+    .cards {
+      flex-direction: row;
+      justify-content: center;
+    }
+  </style>
+  <script>
+    window.onload = function () {
+      var context = new AudioContext();
+    }
+  </script>
 </head>
 
 <body>
-  Service Worker Demo
+  <h1>Seteaza data maxima:</h1>
+  <div class="date-container">
+    <input type="date" id="date" name="trip-start"><br/>
+    <button id="button" sound="false">Sound disabled</button>
+  </div>
+  <audio id="audio" loop preload="none">
+    <source src="./sound.mp3" type="audio/mp3" />
+  </audio>
+  <div class="cards">
+  </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDmYEWYA32-Efxoe13qE2kgJbJQqf8M18w",
+      authDomain: "examsscraper.firebaseapp.com",
+      databaseURL: "https://examsscraper.firebaseio.com",
+      projectId: "examsscraper",
+      storageBucket: "examsscraper.appspot.com",
+      messagingSenderId: "565290638582",
+      appId: "1:565290638582:web:450f24bb0ff00de98660d7"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var date = document.querySelector('input[type="date"]');
+    let audio = document.getElementById("audio");
+    let playAudio = () => {
+      audio.play();
+    }
+    let pauseAudio = () => {
+      audio.pause();
+    }
+    let appendElement = (date) => {
+      let a=document.createElement("a");
+      a.href="https://www.drpciv.ro/drpciv-booking/formular/22/theoryExamination";
+      let card = document.createElement("div");
+      card.className = "card";
+      let container = document.createElement("div");
+      container.className = "container";
+      let text = document.createElement("h4");
+      text.innerHTML = date;
+      container.appendChild(text);
+      card.appendChild(container);
+      a.appendChild(card);
+      let cards = document.getElementsByClassName("cards");
+      cards[0].appendChild(a);
+    }
+    let deleteChildren = () => {
+      document.getElementsByClassName("cards")[0].innerHTML = ""
+    }
+    let button = document.getElementById("button");
+
+    button.addEventListener("click", () => {
+      if (button.attributes.sound.value === "false") {
+        firebase.database().ref("/dates").once("value", data => {
+          if (JSON.parse(data.val()).length > 0) {
+            playAudio();
+          }
+          else {
+            pauseAudio();
+          }
+        })
+        button.setAttribute("sound", "true")
+        button.innerHTML = "Sound enabled";
+      }
+      else {
+        button.setAttribute("sound", "false")
+        button.innerHTML = "Sound disabled";
+        pauseAudio();
+      }
+    })
+
+    date.addEventListener("change", (e) => {
+      firebase.database().ref("/date").set(new Date(e.target.value).toDateString())
+    })
+
+    firebase.database().ref("/dates").on("value", data => {
+      if (JSON.parse(data.val()).length > 0) {
+        deleteChildren();
+        JSON.parse(data.val()).forEach(d => {
+          appendElement(d);
+        })
+        if (button.attributes.sound.value === "true")
+          playAudio();
+      }
+      else {
+        pauseAudio();
+      }
+    })
+
+    firebase.database().ref("/date").once("value", data => {
+      date.value = `${new Date(data.val()).getFullYear()}-${new Date(data.val()).getMonth() + 1}-${new Date(data.val()).getDate()}`
+    })
+  </script>
 </body>
 
 </html>

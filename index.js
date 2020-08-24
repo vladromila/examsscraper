@@ -2,6 +2,7 @@ let express = require("express");
 const webpush = require("web-push");
 var path = require('path');
 var admin = require("firebase-admin");
+let request = require("request");
 var serviceAccount = require("./akeys.json");
 const publicVapidKey = 'BP_V0TZXgtx__iFNal1fR5QIYwRLwPdhmhVM6X82P88DsT9zjJeDocvpX3vH_4cEhAMsQIdkXHuSOI1i1qj9Ogs';
 const privateVapidKey = "PQAU7Lqki91x70jKzWBv67Tmz3e6FI2olUX8WZHcDPA";
@@ -14,6 +15,32 @@ admin.initializeApp({
 webpush.setVapidDetails('mailto:romilavlad2001@gmail.com', publicVapidKey, privateVapidKey);
 
 const app = express();
+
+setInterval(() => {
+    request({
+        url: 'https://www.drpciv.ro/drpciv-booking-api/getAvailableDaysForSpecificService/1/22',
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: {
+        },
+        json: true
+    }, (err, res, body) => {
+        if (!err) {
+            admin.database().ref("/date").once("value", data => {
+                let selectedDate = new Date(data.val());
+                let goodDates = [];
+                body.forEach(d => {
+                    if (new Date(d) <= selectedDate)
+                        goodDates.push(d)
+                })
+                admin.database().ref("/dates/").set(JSON.stringify(goodDates))
+            })
+        }
+    }
+    )
+}, 1000)
 
 app.use(require('body-parser').json());
 app.use(express.static(__dirname + "/public"))
