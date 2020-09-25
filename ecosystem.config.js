@@ -1,21 +1,27 @@
 module.exports = {
-  apps : [{
+  apps: [{
+    name: 'ExamsScraper',
     script: 'index.js',
-    watch: '.'
-  }, {
-    script: './service-worker/',
-    watch: ['./service-worker']
+    instances: 1,
+    autorestart: true,
+    watch: false,
+    max_memory_restart: '1G',
+    env: {
+      NODE_ENV: 'development'
+    },
+    env_production: {
+      NODE_ENV: 'production'
+    }
   }],
-
-  deploy : {
-    production : {
-      user : 'SSH_USERNAME',
-      host : 'SSH_HOSTMACHINE',
-      ref  : 'origin/master',
-      repo : 'GIT_REPOSITORY',
-      path : 'DESTINATION_PATH',
+  deploy: {
+    production: {
+      user: 'root',
+      host: '164.90.194.235',
+      ref: 'origin/master',
+      repo: 'https://github.com/vladromila/examsscraper.git',
+      path: '/var/app/repository/examsscraper/',
       'pre-deploy-local': '',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
     }
   }
