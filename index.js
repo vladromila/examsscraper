@@ -61,4 +61,4 @@ app.use(require('body-parser').json());
 
 app.use('/programare-sala', programareSala)
 
-app.listen(process.env.PORT || 80);
+app.listen(process.env.PORT || 3500);
