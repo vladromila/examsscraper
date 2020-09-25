@@ -19,7 +19,7 @@ module.exports = {
       host: '164.90.194.235',
       ref: 'origin/master',
       repo: 'https://github.com/vladromila/examsscraper.git',
-      path: '/var/app/repository/examsscraper/',
+      path: '/var/app/repository/',
       'pre-deploy-local': '',
       'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
