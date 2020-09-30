@@ -4,12 +4,15 @@ var admin = require("firebase-admin");
 let request = require("request");
 var serviceAccount = require("./akeys.json");
 let programareSala = require('./programare-sala')
+var cors = require('cors');
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://examsscraper.firebaseio.com"
 });
 
 const app = express();
+app.use(cors())
 app.use(express.static(__dirname + "/public"))
 
 let interval = null
