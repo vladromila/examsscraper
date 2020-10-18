@@ -8,6 +8,9 @@ router
     .get('/romila-iulian', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
+    .get('/romila-vlad', function (req, res) {
+        res.sendFile(path.join(__dirname + '/public/index.html'));
+    })
     .get('/popescu-ciprian', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
