@@ -9,6 +9,7 @@ router
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
     .get('/romila-vlad', function (req, res) {
+        console.log("SALUT VLADE!!");
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
     .get('/popescu-ciprian', function (req, res) {

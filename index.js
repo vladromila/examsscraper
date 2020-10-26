@@ -64,4 +64,11 @@ app.use(require('body-parser').json());
 
 app.use('/programare-sala', programareSala)
 
+app.post('/applepay', (req, res) => {
+    console.log("REQUEST APPLE!");
+    console.log(req.body);
+    res.status(200);
+    res.end();
+})
+
 app.listen(process.env.PORT || 3500);
