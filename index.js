@@ -4,6 +4,7 @@ var admin = require("firebase-admin");
 let request = require("request");
 var serviceAccount = require("./akeys.json");
 let programareSala = require('./programare-sala')
+let electron = require('./electron')
 var cors = require('cors');
 
 admin.initializeApp({
@@ -14,6 +15,8 @@ admin.initializeApp({
 const app = express();
 app.use(cors())
 app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/build"))
+
 
 let interval = null
 admin.database().ref("/users").on("value", users => {
@@ -62,7 +65,9 @@ admin.database().ref("/users").on("value", users => {
 
 app.use(require('body-parser').json());
 
-app.use('/programare-sala', programareSala)
+app.use('/programare-sala', programareSala);
+
+app.use('/electron', electron);
 
 app.post('/applepay', (req, res) => {
     console.log("REQUEST APPLE!");
