@@ -70,50 +70,50 @@ admin.database().ref("/sala/users").on("value", users => {
             )
         }, 1000)
 })
-
-// admin.database().ref("/numere/users").on("value", users => {
-//     clearInterval(interval);
-//     let toVerifyUsers = [];
-//     let isAtLeastOneUser = false
-//     if (users.val())
-//         Object.keys(users.val()).forEach(key => {
-//             if (users.val()[key].enabled === true) {
-//                 console.log("nicu e prost");
-//                 toVerifyUsers.push(key);
-//                 isAtLeastOneUser = true
-//             }
-//         })
-//     if (isAtLeastOneUser === true)
-//         interval = setInterval(() => {
-//             request({
-//                 url: 'https://www.drpciv.ro/drpciv-booking-api/getAvailableDaysForSpecificService/8/22',
-//                 method: "GET",
-//                 headers: {
-//                     "content-type": "application/json",
-//                 },
-//                 body: {
-//                 },
-//                 json: true
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     toVerifyUsers.forEach(user => {
-//                         admin.database().ref(`/numere/${user}/date`).once("value", date => {
-//                             if (date) {
-//                                 let selectedDate = new Date(date.val());
-//                                 let goodDates = [];
-//                                 body.forEach(d => {
-//                                     if (new Date(d) <= selectedDate)
-//                                         goodDates.push(d)
-//                                 })
-//                                 admin.database().ref(`/numere/${user}/dates/`).set(JSON.stringify(goodDates))
-//                             }
-//                         })
-//                     })
-//                 }
-//             }
-//             )
-//         }, 1000)
-// })
+let interval2 = null;
+admin.database().ref("/numere/users").on("value", users => {
+    clearInterval(interval2);
+    let toVerifyUsers = [];
+    let isAtLeastOneUser = false
+    if (users.val())
+        Object.keys(users.val()).forEach(key => {
+            if (users.val()[key].enabled === true) {
+                console.log("nicu e prost");
+                toVerifyUsers.push(key);
+                isAtLeastOneUser = true
+            }
+        })
+    if (isAtLeastOneUser === true)
+        interval2 = setInterval(() => {
+            request({
+                url: 'https://www.drpciv.ro/drpciv-booking-api/getAvailableDaysForSpecificService/8/22',
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: {
+                },
+                json: true
+            }, (err, res, body) => {
+                if (!err) {
+                    toVerifyUsers.forEach(user => {
+                        admin.database().ref(`/numere/${user}/date`).once("value", date => {
+                            if (date) {
+                                let selectedDate = new Date(date.val());
+                                let goodDates = [];
+                                body.forEach(d => {
+                                    if (new Date(d) <= selectedDate)
+                                        goodDates.push(d)
+                                })
+                                admin.database().ref(`/numere/${user}/dates/`).set(JSON.stringify(goodDates))
+                            }
+                        })
+                    })
+                }
+            }
+            )
+        }, 1000)
+})
 
 app.use(require('body-parser').json());
 
