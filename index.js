@@ -24,9 +24,11 @@ admin.database().ref("/sala/users").on("value", users => {
     clearInterval(interval);
     let toVerifyUsers = [];
     let isAtLeastOneUser = false
+    console.log(users.val());
     if (users.val())
         Object.keys(users.val()).forEach(key => {
             if (users.val()[key].enabled === true) {
+                console.log("nicu e prost");
                 toVerifyUsers.push(key);
                 isAtLeastOneUser = true
             }
@@ -46,6 +48,7 @@ admin.database().ref("/sala/users").on("value", users => {
             }, (err, res, body) => {
                 if (!err) {
                     toVerifyUsers.forEach(user => {
+                        console.log(`/sala/${user}/date`);
                         admin.database().ref(`/sala/${user}/date`).once("value", date => {
                             if (date) {
                                 let selectedDate = new Date(date.val());
@@ -55,6 +58,7 @@ admin.database().ref("/sala/users").on("value", users => {
                                         goodDates.push(d)
                                 })
                                 admin.database().ref(`/sala/${user}/dates/`).set(JSON.stringify(goodDates))
+                                console.log(goodDates);
                             }
                         })
                     })
@@ -68,9 +72,11 @@ admin.database().ref("/numere/users").on("value", users => {
     clearInterval(interval);
     let toVerifyUsers = [];
     let isAtLeastOneUser = false
+    console.log(users.val());
     if (users.val())
         Object.keys(users.val()).forEach(key => {
             if (users.val()[key].enabled === true) {
+                console.log("nicu e prost");
                 toVerifyUsers.push(key);
                 isAtLeastOneUser = true
             }
@@ -99,6 +105,7 @@ admin.database().ref("/numere/users").on("value", users => {
                                         goodDates.push(d)
                                 })
                                 admin.database().ref(`/numere/${user}/dates/`).set(JSON.stringify(goodDates))
+                                console.log(goodDates);
                             }
                         })
                     })
