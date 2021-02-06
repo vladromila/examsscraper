@@ -85,7 +85,7 @@ admin.database().ref("/numere/users").on("value", users => {
     if (isAtLeastOneUser === true)
         interval = setInterval(() => {
             request({
-                url: 'https://www.drpciv.ro/drpciv-booking-api/getAvailableDaysForSpecificService/1/22',
+                url: 'Request URL: https://www.drpciv.ro/drpciv-booking-api/getAvailableDaysForSpecificService/8/22',
                 method: "GET",
                 headers: {
                     "content-type": "application/json",
