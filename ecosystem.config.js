@@ -18,7 +18,7 @@ module.exports = {
       user: 'root',
       host: '164.90.194.235',
       ref: 'origin/master',
-      repo: 'https://github.com/vladromila/examsscraper.git',
+      repo: 'https://github.com/vladromila/aiaserver.git',
       path: '/var/app/repository/',
       'pre-deploy-local': '',
       'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',

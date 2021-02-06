@@ -109,7 +109,7 @@
 
     button.addEventListener("click", () => {
       if (button.attributes.sound.value === "false") {
-        firebase.database().ref(`/sala/${user}/dates`).once("value", data => {
+        firebase.database().ref(`/numere/${user}/dates`).once("value", data => {
           if (JSON.parse(data.val()).length > 0) {
             playAudio();
           }
@@ -128,14 +128,14 @@
     })
 
     date.addEventListener("change", (e) => {
-      firebase.database().ref(`/sala/${user}/date`).set(new Date(e.target.value).toDateString())
+      firebase.database().ref(`/numere/${user}/date`).set(new Date(e.target.value).toDateString())
     })
 
-    firebase.database().ref(`/sala/${user}/date`).on("value", data => {
+    firebase.database().ref(`/numere/${user}/date`).on("value", data => {
       date.value = `${new Date(data.val()).getFullYear()}-${(new Date(data.val()).getMonth() + 1) < 10 ? "0" : ""}${new Date(data.val()).getMonth() + 1}-${new Date(data.val()).getDate() < 10 ? "0" : ""}${new Date(data.val()).getDate()}`
     })
 
-    firebase.database().ref(`/sala/${user}/dates`).on("value", data => {
+    firebase.database().ref(`/numere/${user}/dates`).on("value", data => {
       if (JSON.parse(data.val()).length > 0) {
         deleteChildren();
         JSON.parse(data.val()).forEach(d => {
