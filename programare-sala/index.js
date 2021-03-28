@@ -48,9 +48,8 @@ router
                             })
 
                     })
-            }
 
-            res.send("done");
+            }
         })
     })
     .get('/romila-vlad', function (req, res) {
