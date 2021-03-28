@@ -197,7 +197,7 @@
     })
 
     firebase.database().ref(`/sala/${user}/data`).on("value", snapshot => {
-      if (snapshot.val().val()) {
+      if (snapshot.val()) {
         document.getElementById("lastNameValue").innerHTML = "Nume Salvat:" + snapshot.val().lastName;
         document.getElementById("firstNameValue").innerHTML = "Prenume Salvat:" + snapshot.val().firstName;
         document.getElementById("fileNumberValue").innerHTML = "Cod Salvat:" + snapshot.val().fileNumber;
