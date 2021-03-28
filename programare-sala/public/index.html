@@ -197,28 +197,14 @@
     })
 
     firebase.database().ref(`/sala/${user}/data`).on("value", snapshot => {
-      document.getElementById("lastNameValue").innerHTML = "Nume Salvat:" + snapshot.lastName;
-      document.getElementById("firstNameValue").innerHTML = "Prenume Salvat:" + snapshot.firstName;
-      document.getElementById("fileNumberValue").innerHTML = "Cod Salvat:" + snapshot.fileNumber;
-      document.getElementById("emailValue").innerHTML = "Email Salvat:" + snapshot.email;
-      document.getElementById("startHour").innerHTML = "Ora salvata" + snapshot.startHour;
-      document.getElementById("date").innerHTML = "Data Salvata:" + snapshot.date;
-
-      document.getElementById("firstName").addEventListener("input", (e) => {
-        firebase.database().ref(`/sala/${user}/data/firstName`).set(e.target.value)
-      })
-      document.getElementById("fileNumber").addEventListener("input", (e) => {
-        firebase.database().ref(`/sala/${user}/data/fileNumber`).set(e.target.value)
-      })
-      document.getElementById("email").addEventListener("input", (e) => {
-        firebase.database().ref(`/sala/${user}/data/email`).set(e.target.value)
-      })
-      document.getElementById("startHour").addEventListener("input", (e) => {
-        firebase.database().ref(`/sala/${user}/data/startHour`).set(e.target.value)
-      })
-      document.getElementById("date").addEventListener("input", (e) => {
-        firebase.database().ref(`/sala/${user}/data/date`).set(e.target.value)
-      })
+      if (snapshot.val().val()) {
+        document.getElementById("lastNameValue").innerHTML = "Nume Salvat:" + snapshot.val().lastName;
+        document.getElementById("firstNameValue").innerHTML = "Prenume Salvat:" + snapshot.val().firstName;
+        document.getElementById("fileNumberValue").innerHTML = "Cod Salvat:" + snapshot.val().fileNumber;
+        document.getElementById("emailValue").innerHTML = "Email Salvat:" + snapshot.val().email;
+        document.getElementById("startHour").innerHTML = "Ora salvata" + snapshot.val().startHour;
+        document.getElementById("date").innerHTML = "Data Salvata:" + snapshot.val().date;
+      }
     })
   </script>
 </body>
