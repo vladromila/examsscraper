@@ -19,6 +19,11 @@
       padding: 10px;
     }
 
+    textarea {
+      align-self: center;
+      margin: auto;
+    }
+
     .date-container {
       justify-content: center;
       text-align: center;
@@ -69,6 +74,9 @@
     <button id="button" sound="false">Sound disabled</button>
   </div>
   <div class="cards">
+  </div>
+  <div style="text-align: center;margin-top: 25px;">
+    <textarea name="token" id="" cols="30" rows="20"></textarea>
   </div>
   <h1>Datele de programare:</h1>
   <div style="display: flex; flex-direction: column;">
@@ -198,12 +206,22 @@
 
     firebase.database().ref(`/sala/${user}/data`).on("value", snapshot => {
       if (snapshot.val()) {
-        document.getElementById("lastNameValue").innerHTML = "Nume Salvat:" + snapshot.val().lastName;
-        document.getElementById("firstNameValue").innerHTML = "Prenume Salvat:" + snapshot.val().firstName;
-        document.getElementById("fileNumberValue").innerHTML = "Cod Salvat:" + snapshot.val().fileNumber;
-        document.getElementById("emailValue").innerHTML = "Email Salvat:" + snapshot.val().email;
-        document.getElementById("startHourValue").innerHTML = "Ora salvata" + snapshot.val().startHour;
-        document.getElementById("dateValue").innerHTML = "Data Salvata:" + snapshot.val().date;
+        document.getElementById("lastNameValue").innerHTML = "Nume Salvat: " + snapshot.val().lastName;
+        document.getElementById("firstNameValue").innerHTML = "Prenume Salvat: " + snapshot.val().firstName;
+        document.getElementById("fileNumberValue").innerHTML = "Cod Salvat: " + snapshot.val().fileNumber;
+        document.getElementById("emailValue").innerHTML = "Email Salvat: " + snapshot.val().email;
+        document.getElementById("startHourValue").innerHTML = "Ora salvata: " + snapshot.val().startHour;
+        document.getElementById("dateValue").innerHTML = "Data Salvata: " + snapshot.val().date;
+      }
+    })
+
+
+    document.getElementById("token").addEventListener("input", event => {
+      console.log(event.target.value)
+      try {
+        let token = JSON.parse(event.target.value.split('[')[1])[1];
+      } catch (error) {
+
       }
     })
   </script>
