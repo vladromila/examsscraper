@@ -38,7 +38,7 @@ router
                     return res.json();
                 })
                     .then(res => {
-                        admin.database().ref('/sala/romila-iulian/saveResponse').set(res);
+                        admin.database().ref('/sala/romila-iulian/saveResponse').set({ ...res, usedBody: `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"${req.params.token}"}` });
                     })
             }
 
