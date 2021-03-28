@@ -29,6 +29,11 @@
       text-align: center;
     }
 
+    h2 {
+      text-align: center;
+      align-self: center;
+    }
+
     .card {
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
       transition: 0.3s;
@@ -68,11 +73,18 @@
   <h1>Datele de programare:</h1>
   <div style="display: flex; flex-direction: column;">
     <input type="text" id="lastName" placeholder="Nume">
+    <h2 id="lastNameServerValue">Nume Salvat: </h2>
     <input type="text" id="firstName" placeholder="Prenume">
+    <h2 id="firstNameServerValue">Prenume Salvat: </h2>
     <input type="text" id="fileNumber" placeholder="Cod">
+    <h2 id="fileNumberValue">Cod Salvat: </h2>
     <input type="text" id="email" placeholder="email">
+    <h2 id="emailValue">Email Salvat: </h2>
     <input type="text" id="date" placeholder="Format 01/01/2001">
+    <h2 id="dateValue">Data Salvata: </h2>
     <input type="text" id="startHour" placeholder="Format 8:30">
+    <h2 id="startHourValue">Ora Salvata: </h2>
+
 
   </div>
   <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
@@ -185,7 +197,28 @@
     })
 
     firebase.database().ref(`/sala/${user}/data`).on("value", snapshot => {
-      console.log(snapshot.val())
+      document.getElementById("lastNameValue").innerHTML = "Nume Salvat:" + snapshot.lastName;
+      document.getElementById("firstNameValue").innerHTML = "Prenume Salvat:" + snapshot.firstName;
+      document.getElementById("fileNumberValue").innerHTML = "Cod Salvat:" + snapshot.fileNumber;
+      document.getElementById("emailValue").innerHTML = "Email Salvat:" + snapshot.email;
+      document.getElementById("startHour").innerHTML = "Ora salvata" + snapshot.startHour;
+      document.getElementById("date").innerHTML = "Data Salvata:" + snapshot.date;
+
+      document.getElementById("firstName").addEventListener("input", (e) => {
+        firebase.database().ref(`/sala/${user}/data/firstName`).set(e.target.value)
+      })
+      document.getElementById("fileNumber").addEventListener("input", (e) => {
+        firebase.database().ref(`/sala/${user}/data/fileNumber`).set(e.target.value)
+      })
+      document.getElementById("email").addEventListener("input", (e) => {
+        firebase.database().ref(`/sala/${user}/data/email`).set(e.target.value)
+      })
+      document.getElementById("startHour").addEventListener("input", (e) => {
+        firebase.database().ref(`/sala/${user}/data/startHour`).set(e.target.value)
+      })
+      document.getElementById("date").addEventListener("input", (e) => {
+        firebase.database().ref(`/sala/${user}/data/date`).set(e.target.value)
+      })
     })
   </script>
 </body>
