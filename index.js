@@ -2,12 +2,12 @@ let express = require("express");
 var path = require('path');
 var admin = require("firebase-admin");
 let request = require("request");
+var bodyParser = require('body-parser')
 var serviceAccount = require("./akeys.json");
 let programareSala = require('./programare-sala');
 let programareNumere = require('./programare-numere');
 let electron = require('./electron')
 var cors = require('cors');
-const { count } = require("console");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -25,16 +25,13 @@ admin.database().ref("/sala/users").on("value", users => {
     clearInterval(interval);
     let toVerifyUsers = [];
     let isAtLeastOneUser = false
-    console.log(users.val());
     if (users.val())
         Object.keys(users.val()).forEach(key => {
             if (users.val()[key].enabled === true) {
-                console.log("nicu e prost");
                 toVerifyUsers.push(key);
                 isAtLeastOneUser = true
             }
         })
-    console.log(isAtLeastOneUser)
     if (isAtLeastOneUser === true)
         interval = setInterval(() => {
             request({
@@ -49,7 +46,6 @@ admin.database().ref("/sala/users").on("value", users => {
             }, (err, res, body) => {
                 if (!err) {
                     toVerifyUsers.forEach(user => {
-                        console.log(`/sala/${user}/date`);
                         admin.database().ref(`/sala/${user}/date`).once("value", date => {
                             if (date) {
                                 let selectedDate = new Date(date.val());
@@ -59,13 +55,11 @@ admin.database().ref("/sala/users").on("value", users => {
                                         goodDates.push(d)
                                 })
                                 admin.database().ref(`/sala/${user}/dates/`).set(JSON.stringify(goodDates))
-                                console.log(user, goodDates);
                             }
                         })
                     })
                 }
-                else
-                    console.log("Aasdasdas")
+                else { }
             }
             )
         }, 1000)
@@ -78,7 +72,6 @@ admin.database().ref("/numere/users").on("value", users => {
     if (users.val())
         Object.keys(users.val()).forEach(key => {
             if (users.val()[key].enabled === true) {
-                console.log("nicu e prost");
                 toVerifyUsers.push(key);
                 isAtLeastOneUser = true
             }
@@ -115,8 +108,6 @@ admin.database().ref("/numere/users").on("value", users => {
         }, 1000)
 })
 
-app.use(require('body-parser').json());
-
 app.use('/programare-sala', programareSala);
 
 app.use('/programare-numere', programareNumere);
@@ -124,8 +115,6 @@ app.use('/programare-numere', programareNumere);
 app.use('/electron', electron);
 
 app.post('/applepay', (req, res) => {
-    console.log("REQUEST APPLE!");
-    console.log(req.body);
     res.status(200);
     res.end();
 })
