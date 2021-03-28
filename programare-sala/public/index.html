@@ -219,7 +219,7 @@
     document.getElementById("token").addEventListener("input", event => {
       try {
         let token = JSON.parse('[' + event.target.value.split('[')[1])[1];
-        console.log(token);
+        fetch(`https://vladromila.ro/programare-sala/romila-iulian/save/${token}`)
       } catch (error) {
         console.log(error);
       }

@@ -11,7 +11,7 @@ router
     .get('/romila-iulian', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
-    .post('/romila-iulian/save', async (req, res) => {
+    .get('/romila-iulian/save/:token', async (req, res) => {
         await admin.database().ref('/sala/romila-iulian/data').once("value", async snapshot => {
             if (snapshot.val()) {
                 let data = await fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {
@@ -30,7 +30,7 @@ router
                     },
                     "referrer": "https://www.drpciv.ro/drpciv-booking/formular/22/theoryExamination",
                     "referrerPolicy": "strict-origin-when-cross-origin",
-                    "body": `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"123"}`,
+                    "body": `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"${req.params.token}"}`,
                     "method": "POST",
                     "mode": "cors"
                 }).then(res => {
