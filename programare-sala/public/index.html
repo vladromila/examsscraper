@@ -8,10 +8,15 @@
       text-align: center;
     }
 
+
     input {
       align-self: center;
       text-align: center;
       font-size: large;
+      margin: 15px;
+      max-width: 90%;
+      width: 400px;
+      padding: 10px;
     }
 
     .date-container {
@@ -48,7 +53,7 @@
   <script>
     window.onload = function () {
       var context = new AudioContext();
-    } 
+    }
   </script>
 </head>
 
@@ -60,6 +65,15 @@
   </div>
   <div class="cards">
   </div>
+  <h1>Datele de programare:</h1>
+  <div style="display: flex; flex-direction: column;">
+    <input type="text" id="lastName" placeholder="Nume">
+    <input type="text" id="firstName" placeholder="Prenume">
+    <input type="text" id="fileNumber" placeholder="Cod">
+    <input type="text" id="email" placeholder="email">
+    <input type="text" id="date" placeholder="Format 01/01/2001">
+    <input type="text" id="startHour" placeholder="Format 8:30">
+
   </div>
   <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
@@ -148,6 +162,30 @@
         deleteChildren();
         pauseAudio();
       }
+    })
+  </script>
+  <script>
+    document.getElementById("lastName").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/lastName`).set(e.target.value)
+    })
+    document.getElementById("firstName").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/firstName`).set(e.target.value)
+    })
+    document.getElementById("fileNumber").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/fileNumber`).set(e.target.value)
+    })
+    document.getElementById("email").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/email`).set(e.target.value)
+    })
+    document.getElementById("startHour").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/startHour`).set(e.target.value)
+    })
+    document.getElementById("date").addEventListener("input", (e) => {
+      firebase.database().ref(`/sala/${user}/data/date`).set(e.target.value)
+    })
+
+    firebase.database().ref(`/sala/${user}/data`).on("value", snapshot => {
+      console.log(snapshot.val())
     })
   </script>
 </body>
