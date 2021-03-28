@@ -11,11 +11,11 @@ router
     .get('/romila-iulian', function (req, res) {
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
-    .get('/romila-iulian/save/:token', (req, res) => {
+    .get('/romila-iulian/save/:token', async (req, res) => {
 
-        admin.database().ref('/sala/romila-iulian/data').once("value", snapshot => {
+        admin.database().ref('/sala/romila-iulian/data').once("value", async snapshot => {
             if (snapshot.val()) {
-                fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {
+                await fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {
                     "headers": {
                         "accept": "application/json",
                         "accept-language": "en,en-US;q=0.9,ro-RO;q=0.8,ro;q=0.7",
@@ -37,19 +37,12 @@ router
                 }).then(res => {
                     return res.json();
                 })
-                    .then((r) => {
-                        admin.database().ref('/sala/romila-iulian/saveResponse').set({ ...res, usedBody: `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"${req.params.token}"}` })
-                            .then(() => {
-                                if (r.errorMessage == null) {
-                                    res.send("asdasd")
-                                }
-                                else
-                                    res.send("asdadssa")
-                            })
-
+                    .then(res => {
+                        admin.database().ref('/sala/romila-iulian/saveResponse').set(JSON.stringify({ ...res, usedBody: `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"${req.params.token}"}` }));
                     })
-
             }
+
+            res.send("done");
         })
     })
     .get('/romila-vlad', function (req, res) {

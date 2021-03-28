@@ -224,6 +224,16 @@
         console.log(error);
       }
     })
+    let isFirstTime = true;
+    firebase.database().ref(`/sala/${user}/saveResponse`).on("value", snapshot => {
+      if (snapshot.val() && isFirstTime == false) {
+        console.log(JSON.parse(snapshot.val()))
+      }
+      else
+        if (isFirstTime == true)
+          isFirstTime = false
+    })
+
   </script>
 </body>
 
