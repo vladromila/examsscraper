@@ -228,7 +228,7 @@
     firebase.database().ref(`/sala/${user}/saveResponse`).on("value", snapshot => {
       if (snapshot.val() && isFirstTime == false) {
         if (!JSON.parse(snapshot.val()).success)
-          alert("Eroare!", JSON.parse(snapshot.val()).errorMessage.description)
+          alert("Eroare!" + JSON.parse(snapshot.val()).errorMessage.description)
         else
           alert("Succes!")
       }
