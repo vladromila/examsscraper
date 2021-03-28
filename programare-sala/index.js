@@ -12,9 +12,10 @@ router
         res.sendFile(path.join(__dirname + '/public/index.html'));
     })
     .get('/romila-iulian/save/:token', async (req, res) => {
-        await admin.database().ref('/sala/romila-iulian/data').once("value", async snapshot => {
+
+        admin.database().ref('/sala/romila-iulian/data').once("value", async snapshot => {
             if (snapshot.val()) {
-                let data = await fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {
+                await fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {
                     "headers": {
                         "accept": "application/json",
                         "accept-language": "en,en-US;q=0.9,ro-RO;q=0.8,ro;q=0.7",
@@ -36,10 +37,12 @@ router
                 }).then(res => {
                     return res.json();
                 })
-                console.log(data);
+                    .then(res => {
+                        admin.database().ref('/sala/romila-iulian/saveResponse').set(res);
+                    })
             }
 
-            res.send("asd");
+            res.send("done");
         })
     })
     .get('/romila-vlad', function (req, res) {
