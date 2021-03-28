@@ -218,7 +218,7 @@
 
     document.getElementById("token").addEventListener("input", event => {
       try {
-        let token = JSON.parse('[' + event.target.value.split('[')[1])[1];
+        let token = event.target.value.split('uvresp","')[1].split('"')[0];
         fetch(`https://vladromila.ro/programare-sala/romila-iulian/save/${token}`)
       } catch (error) {
         console.log(error);
