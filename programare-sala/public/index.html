@@ -219,7 +219,7 @@
     document.getElementById("token").addEventListener("input", event => {
       try {
         let token = event.target.value.split('uvresp","')[1].split('"')[0];
-        fetch(`https://vladromila.ro/programare-sala/romila-iulian/save/${token}`)
+        fetch(`https://vladromila.ro/programare-sala/${user}/save/${token}`)
       } catch (error) {
         console.log(error);
       }
