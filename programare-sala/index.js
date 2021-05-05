@@ -31,7 +31,7 @@ router
                     },
                     "referrer": "https://www.drpciv.ro/drpciv-booking/formular/22/theoryExamination",
                     "referrerPolicy": "strict-origin-when-cross-origin",
-                    "body": "{\"firstName\":\"Romila\",\"lastName\":\"Vlad\",\"fileNumber\":\"2758558\",\"email\":\"romilavlad2001@gmail.com\",\"phone\":\"\",\"personalIdentificationNumber\":\"\",\"plateNumber\":\"\",\"chassisNumber\":\"\",\"countyCode\":22,\"activityCode\":1,\"startHour\":\"09:20\",\"date\":\"2021/07/06\",\"boothIds\":[665,366],\"reCaptchaKey\":" + '"' + req.params.token + '"}',
+                    "body": "{\"firstName\":" + `"${snapshot.val().firstName}"` + ",\"lastName\":" + `"${snapshot.val().lastName}"` + "fileNumber\":" + `"${snapshot.val().fileNumber}"` + "email\":\"programaricursanti@gmail.com\",\"phone\":\"\",\"personalIdentificationNumber\":\"\",\"plateNumber\":\"\",\"chassisNumber\":\"\",\"countyCode\":22,\"activityCode\":1,\"startHour\":" + `"${snapshot.val().startHour}"` + "date\":" + `"${snapshot.val().date}"` + "boothIds\":[665,366],\"reCaptchaKey\":" + '"' + req.params.token + '"}',
                     "method": "POST",
                     "mode": "cors"
                 }).then(res => {
