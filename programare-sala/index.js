@@ -31,14 +31,44 @@ router
                     },
                     "referrer": "https://www.drpciv.ro/drpciv-booking/formular/22/theoryExamination",
                     "referrerPolicy": "strict-origin-when-cross-origin",
-                    "body": "{\"firstName\":" + `"${snapshot.val().firstName}"` + ",\"lastName\":" + `"${snapshot.val().lastName}"` + "fileNumber\":" + `"${snapshot.val().fileNumber}"` + "email\":\"programaricursanti@gmail.com\",\"phone\":\"\",\"personalIdentificationNumber\":\"\",\"plateNumber\":\"\",\"chassisNumber\":\"\",\"countyCode\":22,\"activityCode\":1,\"startHour\":" + `"${snapshot.val().startHour}"` + "date\":" + `"${snapshot.val().date}"` + "boothIds\":[665,366],\"reCaptchaKey\":" + '"' + req.params.token + '"}',
+                    "body": JSON.stringify({
+                        ...snapshot.val(),
+                        "email": "programaricursanti@gmail.com",
+                        "phone": "",
+                        "personalIdentificationNumber": "",
+                        "plateNumber": "",
+                        "chassisNumber": "",
+                        "countyCode": 22,
+                        "activityCode": 1,
+                        "boothIds": [
+                            665,
+                            366
+                        ],
+                        "reCaptchaKey": req.params.token
+                    }),
                     "method": "POST",
                     "mode": "cors"
                 }).then(res => {
                     return res.json();
                 })
                     .then(res => {
-                        admin.database().ref('/sala/romila-iulian/saveResponse').set(JSON.stringify({ ...res, usedBody: `{"firstName":"${snapshot.val().firstName}","lastName":"${snapshot.val().lastName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}","boothIds":[665,366],"reCaptchaKey":"${req.params.token}"}` }));
+                        admin.database().ref('/sala/romila-iulian/saveResponse').set(JSON.stringify({
+                            ...res, usedBody: `${{
+                                ...snapshot.val(),
+                                "email": "programaricursanti@gmail.com",
+                                "phone": "",
+                                "personalIdentificationNumber": "",
+                                "plateNumber": "",
+                                "chassisNumber": "",
+                                "countyCode": 22,
+                                "activityCode": 1,
+                                "boothIds": [
+                                    665,
+                                    366
+                                ],
+                                "reCaptchaKey": req.params.token
+                            }}`
+                        }));
                     })
             }
 
