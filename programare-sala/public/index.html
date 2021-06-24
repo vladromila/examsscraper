@@ -72,6 +72,8 @@
   <div class="date-container">
     <input type="date" id="date" name="trip-start"><br />
     <button id="button" sound="false">Sound disabled</button>
+    <button id="copybutton" sound="false">Copy</button>
+    <input id="toCopyText" />
   </div>
   <div class="cards">
   </div>
@@ -100,6 +102,18 @@
 
   <script>
     let user = window.location.href.split("/").pop();
+    document.getElementById("toCopyText").value = "fetch(`https://vladromila.ro/programare-sala/" + user + "/save/${grecaptcha.getResponse()}`)"
+    document.getElementById("copybutton").onclick = () => {
+      alert("da")
+      var copyText = document.getElementById("toCopyText");
+
+      /* Select the text field */
+      copyText.select();
+      copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+    }
     // Your web app's Firebase configuration
     var firebaseConfig = {
       apiKey: "AIzaSyDmYEWYA32-Efxoe13qE2kgJbJQqf8M18w",
