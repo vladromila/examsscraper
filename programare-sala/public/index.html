@@ -119,7 +119,6 @@
     let defaultBody = '{"phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"boothIds":[665,366],"reCaptchaKey":"${grecaptcha.getResponse()}"';
     let body = defaultBody;
     let user = window.location.href.split("/").pop();
-    document.getElementById("toCopyText").value = "fetch(`https://vladromila.ro/programare-sala/" + user + "/save/${grecaptcha.getResponse()}`)"
     document.getElementById("copybutton").onclick = () => {
       var copyText = document.getElementById("toCopyText");
 
@@ -245,7 +244,7 @@
         body = defaultBody;
         body = body + `,"lastName":"${snapshot.val().lastName}","firstName":"${snapshot.val().firstName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}"},`;
         let finalResponse = defaultString.replace("___BODY___", body);
-        alert(finalResponse)
+        document.getElementById("toCopyText").value = finalResponse;
       }
     })
 
