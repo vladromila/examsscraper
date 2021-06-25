@@ -116,7 +116,7 @@
         console.log(res)
     })`
 
-    let defaultBody = 'fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {"headers": {"accept": "application/json","content-type": "application/json",},"body": `{"firstName":"___FIRST_NAME___","lastName":"___LAST_NAME___","fileNumber":"___FILE_NUMBER___","email":"___EMAIL___","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"___START_HOUR___","date":"___DATE___","boothIds":[665,366],"reCaptchaKey":"${grecaptcha.getResponse()}"}`,"method": "POST","mode": "cors"}).then(res =>  res.json()).then((res) => { if (res.errorMessage) { console.log("Eroare", res.errorMessage.description); alert(res.errorMessage.description) } else {alet("Succes!"); console.log("Succes!");} })'
+    let defaultBody = 'fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {"headers": {"accept": "application/json","content-type": "application/json",},"body": `{"firstName":"___FIRST_NAME___","lastName":"___LAST_NAME___","fileNumber":"___FILE_NUMBER___","email":"___EMAIL___","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"___START_HOUR___","date":"___DATE___","boothIds":[665,366],"reCaptchaKey":"${grecaptcha.getResponse()}"}`,"method": "POST","mode": "cors"}).then(res =>  res.json()).then((res) => { if (res.errorMessage) { console.log("Eroare", res.errorMessage.description); alert(res.errorMessage.description) } else {alert("Succes!"); console.log("Succes!");} })'
     let user = window.location.href.split("/").pop();
     // Your web app's Firebase configuration
     var firebaseConfig = {
