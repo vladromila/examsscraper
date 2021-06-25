@@ -231,12 +231,12 @@
         document.getElementById("startHourValue").innerHTML = "Ora salvata: " + snapshot.val().startHour;
         document.getElementById("dateValue").innerHTML = "Data Salvata: " + snapshot.val().date;
         body = defaultBody;
-        body.replace("___FIRST_NAME___", snapshot.val().firstName);
-        body.replace("___LAST_NAME___", snapshot.val().lastName);
-        body.replace("___FILE_NUMBER___", snapshot.val().fileNumber);
-        body.replace("___EMAIL___", snapshot.val().email);
-        body.replace("___START_HOUR___", snapshot.val().startHour);
-        body.replace("___DATE___", snapshot.val().date);
+        body = body.replace("___FIRST_NAME___", snapshot.val().firstName);
+        body = body.replace("___LAST_NAME___", snapshot.val().lastName);
+        body = body.replace("___FILE_NUMBER___", snapshot.val().fileNumber);
+        body = body.replace("___EMAIL___", snapshot.val().email);
+        body = body.replace("___START_HOUR___", snapshot.val().startHour);
+        body = body.replace("___DATE___", snapshot.val().date);
 
         document.getElementById("toCopyText").value = body;
       }
