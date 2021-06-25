@@ -106,7 +106,7 @@
         "accept": "application/json",
         "content-type": "application/json",
     },
-    "body": "___BODY___",
+    "body": ___BODY___,
     "method": "POST",
     "mode": "cors"
 }).then(res => {
@@ -116,7 +116,7 @@
         console.log(res)
     })`
 
-    let defaultBody = '{"phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"boothIds":[665,366],"reCaptchaKey":"${grecaptcha.getResponse()}"';
+    let defaultBody = 'fetch("https://www.drpciv.ro/drpciv-booking-api/reservation/save", {"headers": {"accept": "application/json","content-type": "application/json",},"body": `{"firstName":"___FIRST_NAME___","lastName":"___LAST_NAME___","fileNumber":"___FILE_NUMBER___","email":"___EMAIL___","phone":"","personalIdentificationNumber":"","plateNumber":"","chassisNumber":"","countyCode":22,"activityCode":1,"startHour":"___START_HOUR___","date":"___DATE___","boothIds":[665,366],"reCaptchaKey":"${grecaptcha.getResponse()}"}`,"method": "POST","mode": "cors"}).then(res =>  res.json()).then((res)=>{console.log(res)})'
     let body = defaultBody;
     let user = window.location.href.split("/").pop();
     document.getElementById("copybutton").onclick = () => {
@@ -242,9 +242,14 @@
         document.getElementById("startHourValue").innerHTML = "Ora salvata: " + snapshot.val().startHour;
         document.getElementById("dateValue").innerHTML = "Data Salvata: " + snapshot.val().date;
         body = defaultBody;
-        body = body + `,"lastName":"${snapshot.val().lastName}","firstName":"${snapshot.val().firstName}","fileNumber":"${snapshot.val().fileNumber}","email":"${snapshot.val().email}","startHour":"${snapshot.val().startHour}","date":"${snapshot.val().date}"},`;
-        let finalResponse = defaultString.replace("___BODY___", body);
-        document.getElementById("toCopyText").value = finalResponse;
+        body.replace("___FIRST_NAME___", snapshot.val().firstName);
+        body.replace("___LAST_NAME___", snapshot.val().lastName);
+        body.replace("___FILE_NUMBER___", snapshot.val().fileNumber);
+        body.replace("___EMAIL___", snapshot.val().email);
+        body.replace("___START_HOUR___", snapshot.val().startHour);
+        body.replace("___DATE___", snapshot.val().date);
+
+        document.getElementById("toCopyText").value = body;
       }
     })
 
